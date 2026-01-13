@@ -2,7 +2,7 @@ pipeline{
 	agent any
 	environment{
 		DOCKER_CREDENTIALS=credentials('dockerhubID')
-		DOCKER_IMAGE='josh57/flas-rep
+		DOCKER_IMAGE='josh57/flas-rep'
 	}
 	stages
 	{
