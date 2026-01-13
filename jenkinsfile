@@ -22,7 +22,7 @@ pipeline{
 			{
 				script
 				{
-					dockerImage=docker.build('${DOCKER_IMAGE}:latest')
+					dockerImage=docker.build("${DOCKER_IMAGE}:latest")
 				}
 			}
 		
