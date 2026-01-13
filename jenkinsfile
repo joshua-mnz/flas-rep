@@ -1,0 +1,61 @@
+pipeline{
+	agent any
+	environment{
+		DOCKER_CREDENTIALS=credentials('dockerhubID')
+		DOCKER_IMAGE='josh57/flas-rep
+	}
+	stages
+	{
+		stage('Checkout')
+		{
+			steps
+			{
+				git(
+					url:'https://github.com/joshua-mnz/flas-rep',
+					branch:'main'
+				)
+			}
+		}
+		stage('Build Docker Image')
+		{
+			steps
+			{
+				script
+				{
+					dockerImage=docker.build('${DOCKER_IMAGE}:latest')
+				}
+			}
+		
+		}
+		stage('Push to Docker Registry')
+		{
+			steps
+			{
+				script
+				{
+					docker.withRegistry('https://registry.hub.docker.com','dockerhubID')
+					{
+						dockerImage.push()
+					}
+				}
+			}
+		}
+		
+	}
+	post
+	{
+		success
+		{
+			echo 'Pipeline Succeeded'
+		}
+		failure
+		{
+			echo 'Pipeline Failed'
+		}
+		always
+		{
+			echo 'Cleaning up Workspace...'
+			deleteDir()
+		}
+	}
+}
